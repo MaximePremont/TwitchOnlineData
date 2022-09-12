@@ -1,0 +1,19 @@
+{
+  "name": "twitchstreamdataapi",
+  "version": "1.0.0",
+  "description": "API to retrieve information from a live stream on Twitch TV.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaximePremont/TwitchStreamDataAPI.git"
+  },
+  "author": "Maxime PREMONT",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/MaximePremont/TwitchStreamDataAPI/issues"
+  },
+  "homepage": "https://github.com/MaximePremont/TwitchStreamDataAPI#readme"
+}
