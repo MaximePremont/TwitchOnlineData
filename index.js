@@ -34,8 +34,11 @@ async function authTwitch() {
     authorization = `${token_type} ${access_token}`
 }
 
-app.get('', (req, res) => {
-    res.send("Hello world!")
+app.get('/', (req, res) => {
+    if (typeof req.query.user === undefined)
+        res.send("Error, user undefined.")
+    else
+        res.send(req.query.user)
 })
 
 app.listen(port, () => {
