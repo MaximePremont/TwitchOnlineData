@@ -25,6 +25,15 @@ function sendTwitchRequest() {
     })
 }
 
+let authorization = ''
+
+async function authTwitch() {
+    const authorizationObject = await sendTwitchRequest()
+    let { access_token, expires_in, token_type } = authorizationObject
+    token_type = token_type.substring(0, 1).toUpperCase() + token_type.substring(1, token_type.length)
+    authorization = `${token_type} ${access_token}`
+}
+
 app.get('', (req, res) => {
     res.send("Hello world!")
 })
@@ -33,4 +42,4 @@ app.listen(port, () => {
     console.log(`Twitch Stream Data API running on port ${port}`)
 })
 
-module.exports = app;
+module.exports = app
