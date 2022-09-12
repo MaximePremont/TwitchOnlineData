@@ -34,11 +34,26 @@ async function authTwitch() {
     authorization = `${token_type} ${access_token}`
 }
 
-app.get('/', (req, res) => {
-    if (typeof req.query.user === undefined)
+app.get('/', async (req, res) => {
+    console.log(req.query.user)
+    if (req.query.user === undefined) {
         res.send("Error, user undefined.")
-    else
-        res.send(req.query.user)
+    } else {
+        await authTwitch();
+        const endpoint = `https://api.twitch.tv/helix/streams?user_login=${req.query.user}`
+
+        let headers = {
+            authorization,
+            "Client-Id": clientId
+        }
+        fetch(endpoint, {
+            headers
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            res.send(data)
+        })
+    }
 })
 
 app.listen(port, () => {
