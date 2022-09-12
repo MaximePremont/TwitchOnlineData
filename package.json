@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/MaximePremont/TwitchStreamDataAPI/issues"
   },
-  "homepage": "https://github.com/MaximePremont/TwitchStreamDataAPI#readme"
+  "homepage": "https://github.com/MaximePremont/TwitchStreamDataAPI#readme",
+  "dependencies": {
+    "node-fetch": "^2.6.7"
+  }
 }
