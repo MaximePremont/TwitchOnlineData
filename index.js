@@ -10,6 +10,21 @@ const port = process.env.PORT || 80
 
 app.use(express.static('public'))
 
+const clientId = process.env.CLIENT_ID
+const clientSecret = process.env.CLIENT_SECRET
+
+function sendTwitchRequest() {
+    const url = `https://id.twitch.tv/oauth2/token?client_id=${clientId}&client_secret=${clientSecret}&grant_type=client_credentials`
+
+    return fetch(url, {
+        method: "POST"
+    })
+    .then((res) => res.json())
+    .then((data) => {
+        return data
+    })
+}
+
 app.get('', (req, res) => {
     res.send("Hello world!")
 })
