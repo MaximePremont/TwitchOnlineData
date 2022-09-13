@@ -23,36 +23,56 @@ function sendTwitchRequest() {
     .then((data) => {
         return data
     })
+    .catch((error) => {
+        console.log(`Error: ${error}`)
+        return 'undefined'
+    })
 }
 
-let authorization = ''
+let authorization = 'undefined'
 
 async function authTwitch() {
     const authorizationObject = await sendTwitchRequest()
-    let { access_token, expires_in, token_type } = authorizationObject
-    token_type = token_type.substring(0, 1).toUpperCase() + token_type.substring(1, token_type.length)
-    authorization = `${token_type} ${access_token}`
+    if (authorizationObject === 'undefined') {
+        authorization = 'undefined'
+    } else {
+        try {
+            let { access_token, expires_in, token_type } = authorizationObject
+            token_type = token_type.substring(0, 1).toUpperCase() + token_type.substring(1, token_type.length)
+            authorization = `${token_type} ${access_token}`
+        } catch (error) {
+            console.log(`Error: ${authorizationObject} | ${error}`)
+            authorization = 'undefined'
+        }
+    }
 }
 
 app.get('/', async (req, res) => {
-    console.log(req.query.user)
     if (req.query.user === undefined) {
         res.send("Error, user undefined.")
     } else {
-        await authTwitch();
-        const endpoint = `https://api.twitch.tv/helix/streams?user_login=${req.query.user}`
+        await authTwitch()
+        if (authorization === 'undefined') {
+            res.send("Error, twitch auth failed.")
+        } else {
+            const endpoint = `https://api.twitch.tv/helix/streams?user_login=${req.query.user}`
 
-        let headers = {
-            authorization,
-            "Client-Id": clientId
+            let headers = {
+                authorization,
+                "Client-Id": clientId
+            }
+            fetch(endpoint, {
+                headers
+            })
+            .then((res) => res.json())
+            .then((data) => {
+                res.send(data)
+            })
+            .catch((error) => {
+                console.log(`Error: ${error}`)
+                res.send("Error, can't retrieve data from twitch.")
+            })
         }
-        fetch(endpoint, {
-            headers
-        })
-        .then((res) => res.json())
-        .then((data) => {
-            res.send(data)
-        })
     }
 })
 
